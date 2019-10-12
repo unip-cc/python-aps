@@ -5,7 +5,7 @@ from functions import *
 OPCAO_ENCERRAR_PROGRAMA = 7
 
 ## Variáveis
-menuInicial  = True
+menuInicial = True
 opcaoEscolhida = 0
 
 while menuInicial:
@@ -16,11 +16,11 @@ while menuInicial:
 
     opcaoEscolhida = int(input('\nOpção desejada: '))
 
-    if getArrayOpcoes().count(opcaoEscolhida) > 0:
+    if getOpcoesCategorias().count(opcaoEscolhida) > 0:
         menuInicial = False
 
         if opcaoEscolhida != OPCAO_ENCERRAR_PROGRAMA:
-            exibeObjetosByOpcao(opcaoEscolhida)
+            menuInicial = exibeObjetosByOpcao(opcaoEscolhida)
     else:
-        exibeMensagemErro('Opção inexistente. Tente novamnete.')
+        exibeMensagemErro('Opção inexistente. Tente novamente.')
 
