@@ -14,7 +14,10 @@ while menuInicial:
 
     exibeMenuInicial()
 
-    opcaoEscolhida = int(input('\nOpção desejada: '))
+    opcaoEscolhida = input('\nOpção desejada: ')
+
+    ## Converte para inteiro (int) caso o usuário tenha digitado somente números
+    opcaoEscolhida = int(opcaoEscolhida) if opcaoEscolhida.isnumeric() else str(opcaoEscolhida)
 
     if getOpcoesCategorias().count(opcaoEscolhida) > 0:
         menuInicial = False
@@ -22,5 +25,6 @@ while menuInicial:
         if opcaoEscolhida != OPCAO_ENCERRAR_PROGRAMA:
             menuInicial = exibeObjetosByOpcao(opcaoEscolhida)
     else:
-        exibeMensagemErro('Opção inexistente. Tente novamente.')
+        textoErro = 'Opção inexistente.' if len(opcaoEscolhida) > 0 else 'Digite alguma coisa.'
+        exibeMensagemErro(textoErro + '. Tente novamente.')
 
