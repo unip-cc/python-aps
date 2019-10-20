@@ -3,6 +3,18 @@ import os
 
 ## Exibe o menu principal da aplicação (solicita ao usuário a escolha de uma categoria)
 def exibeMenuInicial():
+    ## http://patorjk.com/software/taag (converte texto para ASCII)
+    print(
+    r"""
+    ______          _      _             
+    | ___ \        (_)    | |        _   
+    | |_/ /___  ___ _  ___| | __ _ _| |_ 
+    |    // _ \/ __| |/ __| |/ _` |_   _|
+    | |\ \  __/ (__| | (__| | (_| | |_|  
+    \_| \_\___|\___|_|\___|_|\__,_|       
+    """)
+    print(
+        """O objetivo deste programa é facilitar o processo de reciclagem, desde a identificação do reciclável até a localização de um ponto para coleta. É tudo muito fácil, vamos começar!?\n""")
     print(
         """Digite o número de uma categoria abaixo:
         
@@ -45,24 +57,6 @@ def convertOpcaoToTipo(opcao):
     else:
         return ''
 
-## Retorna um array/vetor contendo todos os objetos disponíveis para serem reciclados
-def getObjetos():
-    return  [
-        { 'id': 1, 'descricao': 'Garrafa PET', 'tipo': 'plastico' },
-        { 'id': 2, 'descricao': 'Potes de plástico', 'tipo': 'plastico' },
-        { 'id': 3, 'descricao': 'Tampa de embalagem', 'tipo': 'plastico' },
-        { 'id': 4, 'descricao': 'Cano PVC', 'tipo': 'plastico' },
-        { 'id': 5, 'descricao': 'Saco plástico', 'tipo': 'plastico' },
-        { 'id': 6, 'descricao': 'Peça de brinquedo', 'tipo': 'plastico' },
-        { 'id': 7, 'descricao': 'Balde', 'tipo': 'plastico' },
-        { 'id': 8, 'descricao': 'Lata de alumínio', 'tipo': 'metal' },
-        { 'id': 9, 'descricao': 'Lata de aço', 'tipo': 'metal' },
-        { 'id': 10, 'descricao': 'Tampa', 'tipo': 'metal' },
-        { 'id': 11, 'descricao': 'Ferragem', 'tipo': 'metal' },
-        { 'id': 12, 'descricao': 'Cano', 'tipo': 'metal' },
-        { 'id': 13, 'descricao': 'Moldura de quadro', 'tipo': 'metal' },
-    ]
-
 ## Retorna um array/vetor contendo os objetos disponíveis para serem reciclados baseado num tipo específico (plástico, vidro, etc.)
 def getObjetosByTipo(opcao):
     objetos = []
@@ -98,7 +92,7 @@ def exibeObjetosByOpcao(numeroOpcao):
         for objeto in objetos:
             print("""   * """ + '[{id}] - {nome}'.format(id = objeto['id'], nome = objeto['descricao']))
 
-        opcaoEscolhida = int(input('Digite o nº do objeto que deseja reciclar: '))
+        opcaoEscolhida = int(input('\nDigite o nº do objeto que deseja reciclar: '))
 
         if opcoesDisponiveis.count(opcaoEscolhida):
             opcaoValida = True
@@ -152,3 +146,27 @@ def exibeMensagemErro(msg):
 ## Limpa o console
 def limpaConsole():
     os.system('cls') ## Executa o comando 'cls' no console
+
+## Retorna um array/vetor contendo todos os objetos disponíveis para serem reciclados
+def getObjetos():
+    return  [
+        { 'id': 1, 'descricao': 'Garrafa PET', 'obs': '', 'tipo': 'plastico', },
+        { 'id': 2, 'descricao': 'Potes de plástico', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 3, 'descricao': 'Tampa de embalagem', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 4, 'descricao': 'Cano PVC', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 5, 'descricao': 'Saco plástico', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 6, 'descricao': 'Peça de brinquedo', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 7, 'descricao': 'Balde', 'obs': '', 'tipo': 'plastico' },
+        { 'id': 8, 'descricao': 'Lata de alumínio', 'obs': '', 'tipo': 'metal' },
+        { 'id': 9, 'descricao': 'Lata de aço', 'obs': '', 'tipo': 'metal' },
+        { 'id': 10, 'descricao': 'Tampa', 'obs': '', 'tipo': 'metal' },
+        { 'id': 11, 'descricao': 'Ferragem', 'obs': '', 'tipo': 'metal' },
+        { 'id': 12, 'descricao': 'Cano', 'obs': '', 'tipo': 'metal' },
+        { 'id': 13, 'descricao': 'Moldura de quadro', 'obs': '', 'tipo': 'metal' },
+    ]
+
+## Retorna um array/vetor contendo todos os pontos de coleta disponíveis
+def getPontosDeColeta():
+    return [
+        { 'id': 1, 'nome': '', 'endereco': '', 'latitude': '', 'longitude': '', 'categoria': '' }
+    ]
