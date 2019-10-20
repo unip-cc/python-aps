@@ -105,7 +105,7 @@ def exibeObjetosByOpcao(numeroOpcao):
         if opcoesDisponiveis.count(opcaoEscolhida):
             opcaoValida = True
             objetoEscolhido = getObjetoById(objetos, opcaoEscolhida)
-        elif opcaoEscolhida.upper() == OPCAO_VOLTAR:
+        elif str(opcaoEscolhida).upper() == OPCAO_VOLTAR:
             ## Volta para o menu inicial
             return True
         else:
