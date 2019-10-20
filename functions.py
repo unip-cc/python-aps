@@ -1,6 +1,9 @@
 ## Importação de bibliotecas
 import os
 
+## Constantes
+OPCAO_VOLTAR = 'VOLTAR'
+
 ## Exibe o menu principal da aplicação (solicita ao usuário a escolha de uma categoria)
 def exibeMenuInicial():
     ## http://patorjk.com/software/taag (converte texto para ASCII)
@@ -92,11 +95,19 @@ def exibeObjetosByOpcao(numeroOpcao):
         for objeto in objetos:
             print("""   * """ + '[{id}] - {nome}'.format(id = objeto['id'], nome = objeto['descricao']))
 
-        opcaoEscolhida = int(input('\nDigite o nº do objeto que deseja reciclar: '))
+        print('\nNOTA: Se quiser voltar para o menu inicial, digite a palavra VOLTAR ;)')
+
+        opcaoEscolhida = input('\nDigite o nº do objeto que deseja reciclar: ')
+
+        ## Converte para inteiro (int) caso o usuário tenha digitado somente números
+        opcaoEscolhida = int(opcaoEscolhida) if opcaoEscolhida.isnumeric() else str(opcaoEscolhida)
 
         if opcoesDisponiveis.count(opcaoEscolhida):
             opcaoValida = True
             objetoEscolhido = getObjetoById(objetos, opcaoEscolhida)
+        elif opcaoEscolhida.upper() == OPCAO_VOLTAR:
+            ## Volta para o menu inicial
+            return True
         else:
             opcaoValida = False
             exibeMensagemErro('Opção inexistente. Tente novamente.')
