@@ -25,6 +25,6 @@ while menuInicial:
         if opcaoEscolhida != OPCAO_ENCERRAR_PROGRAMA:
             menuInicial = exibeObjetosByOpcao(opcaoEscolhida)
     else:
-        textoErro = 'Opção inexistente.' if len(opcaoEscolhida) > 0 else 'Digite alguma coisa.'
+        textoErro = 'Opção inexistente.' if len(str(opcaoEscolhida)) > 0 else 'Digite alguma coisa.'
         exibeMensagemErro(textoErro + '. Tente novamente.')
 
