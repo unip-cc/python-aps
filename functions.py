@@ -60,6 +60,16 @@ def convertOpcaoToTipo(opcao):
     else:
         return ''
 
+## Retorna os pontos de coleta a partir de uma categoria (plástico, vidro, papel, etc.)
+def getPontosDeColetaByCategoria(categoria):
+    pontosDeColeta = []
+
+    for ponto in getPontosDeColeta():
+        if ponto['categoria'] == categoria:
+            pontosDeColeta.append(ponto)
+
+    return pontosDeColeta
+
 ## Retorna um array/vetor contendo os objetos disponíveis para serem reciclados baseado num tipo específico (plástico, vidro, etc.)
 def getObjetosByTipo(opcao):
     objetos = []
@@ -76,6 +86,18 @@ def getObjetoById(objetos, id):
     for objeto in objetos:
         if objeto['id'] == id:
             return objeto
+
+## Retorna o ponto de coleta mais próximo (se baseia na latitude e longitude do usuário)
+def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude):
+    pontoMaisProximo = pontosDeColeta[0]
+
+    for ponto in pontosDeColeta:
+        difLatitude = latitude - ponto['latitude']
+        difLongitude = longitude - ponto['longitude']
+
+        
+
+    return pontoMaisProximo
 
 ## Exibe o banco de objetos a partir de uma opção escolhida (plástico, vidro, etc.)
 def exibeObjetosByOpcao(numeroOpcao):
@@ -120,20 +142,26 @@ def exibeObjetosByOpcao(numeroOpcao):
         ## Variáveis
         latitude = ''
         longitude = ''
+        pontosDeColetaDisponiveis = getPontosDeColetaByCategoria(objetoEscolhido['tipo'])
+        pontoDeColetaMaisProximo = {}
 
         limpaConsole()
 
         print('Dados do material a ser reciclado:\n')
+        
         exibeDetalhesObjeto(objetoEscolhido)
     
         print('\nAgora iremos precisar que você digite as suas coordenadas geográficas (latitude e longitude), ok?\n')
+        
         latitude = str(input('Digite a sua latitude: '))
         longitude = str(input('Digite a sua longitude: '))
 
         if len(latitude) > 0 and len(longitude) > 0:
             opcaoValida = True
+            exibePontosDeColetaDisponiveis(pontosDeColetaDisponiveis)
+            pontoDeColetaMaisProximo = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude)
 
-
+            input()
         else:
             opcaoValida = False
             exibeMensagemErro('Certifique-se de digitar os dados corretamente.')
@@ -143,8 +171,8 @@ def exibeObjetosByOpcao(numeroOpcao):
 
 ## Exibe os detalhes do objeto a ser reciclado
 def exibeDetalhesObjeto(objeto):
-    print("""   => Código interno: """ + str(objeto['id']))
-    print("""   => Material a ser reciclado: """ + str(objeto['descricao']))
+    print("""  => Código interno..........: """ + str(objeto['id']))
+    print("""  => Material a ser reciclado: """ + str(objeto['descricao']))
     
 ## Exibe uma mensagem de erro no console
 def exibeMensagemErro(msg):
@@ -153,6 +181,17 @@ def exibeMensagemErro(msg):
     print('[ERRO] => ' + str(msg))
     print('\nPrecione qualquer tecla para continuar')
     input()
+
+## Exibe os pontos de coleta disponíveis
+def exibePontosDeColetaDisponiveis(pontosDeColeta):
+    limpaConsole()
+
+    print('Aqui estão os pontos de coleta disponíveis em que você pode descartar o seu reciclável :)\n')
+
+    for ponto in pontosDeColeta:
+        print(""" => Nome....: """ + ponto['nome'])
+        print(""" => Endereço: """ + ponto['endereco'])
+        print('--------------------------------------------------------------')
 
 ## Limpa o console
 def limpaConsole():
@@ -179,5 +218,6 @@ def getObjetos():
 ## Retorna um array/vetor contendo todos os pontos de coleta disponíveis
 def getPontosDeColeta():
     return [
-        { 'id': 1, 'nome': '', 'endereco': '', 'latitude': '', 'longitude': '', 'categoria': '' }
+        { 'id': 1, 'nome': 'Ponto Verde - Vila Costa e Silva', 'endereco': 'R. Saldanha da Gama, 77 - Vila Costa e Silva, Campinas - SP, 13081-000', 'latitude': -22.856155, 'longitude': 47.068549, 'categoria': 'plastico' },
+        { 'id': 2, 'nome': 'Ecoponto Jardim Pacaembu', 'endereco': 'R. Dante Suriani, 2-382 - Chácara Cneo, Campinas - SP, 13033-160', 'latitude': -22.904529, 'longitude': -47.105434, 'categoria': 'plastico' }
     ]
