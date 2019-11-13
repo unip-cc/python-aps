@@ -1,6 +1,6 @@
 ## Importação de bibliotecas
 import os
-
+from math import radians, cos, sin, asin, sqrt
 ## Constantes
 OPCAO_VOLTAR = 'VOLTAR'
 
@@ -88,16 +88,31 @@ def getObjetoById(objetos, id):
             return objeto
 
 ## Retorna o ponto de coleta mais próximo (se baseia na latitude e longitude do usuário)
-def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude):
-    pontoMaisProximo = pontosDeColeta[0]
+def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude, distMax):
+    pontos = []
 
     for ponto in pontosDeColeta:
-        difLatitude = latitude - ponto['latitude']
-        difLongitude = longitude - ponto['longitude']
+        lon1 = longitude
+        lat1 = latitude
+        lon2 = ponto['longitude']
+        lat2 = ponto['latitude']
+        lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-        
+        # Haversine
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+        c = 2 * asin(sqrt(a))
+        r = 6371
+        distancia = c*r
+        distancia = round(distancia, 3)
 
-    return pontoMaisProximo
+        if (distancia < distMax) :
+            ponto['distancia'] = distancia
+            pontos.append(ponto)
+
+    print('ARRAY -->', pontos)
+    return pontos
 
 ## Exibe o banco de objetos a partir de uma opção escolhida (plástico, vidro, etc.)
 def exibeObjetosByOpcao(numeroOpcao):
@@ -156,10 +171,18 @@ def exibeObjetosByOpcao(numeroOpcao):
         latitude = str(input('Digite a sua latitude: '))
         longitude = str(input('Digite a sua longitude: '))
 
+        distMax = digiteDistancia()
+
         if len(latitude) > 0 and len(longitude) > 0:
+            latitude = float(latitude)
+            longitude = float(longitude)
             opcaoValida = True
             exibePontosDeColetaDisponiveis(pontosDeColetaDisponiveis)
-            pontoDeColetaMaisProximo = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude)
+            pontoDeColetaMaisProximo = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude, distMax)
+            if (len(pontoDeColetaMaisProximo) > 0) :
+                print('\n\nEsses são os pontos correspondentes com sua busca: \n')
+                for ponto in pontoDeColetaMaisProximo :
+                    print('Distância: ', ponto['distancia'], ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
 
             input()
         else:
@@ -173,6 +196,9 @@ def exibeObjetosByOpcao(numeroOpcao):
 def exibeDetalhesObjeto(objeto):
     print("""  => Código interno..........: """ + str(objeto['id']))
     print("""  => Material a ser reciclado: """ + str(objeto['descricao']))
+
+def digiteDistancia():
+    return float(input('Digite a distância máxima (em KM) que você está disposto a percorrer pelo ponto --> '))
     
 ## Exibe uma mensagem de erro no console
 def exibeMensagemErro(msg):
@@ -218,6 +244,6 @@ def getObjetos():
 ## Retorna um array/vetor contendo todos os pontos de coleta disponíveis
 def getPontosDeColeta():
     return [
-        { 'id': 1, 'nome': 'Ponto Verde - Vila Costa e Silva', 'endereco': 'R. Saldanha da Gama, 77 - Vila Costa e Silva, Campinas - SP, 13081-000', 'latitude': -22.856155, 'longitude': 47.068549, 'categoria': 'plastico' },
+        { 'id': 1, 'nome': 'Ponto Verde - Vila Costa e Silva', 'endereco': 'R. Saldanha da Gama, 77 - Vila Costa e Silva, Campinas - SP, 13081-000', 'latitude': -22.856155, 'longitude': -47.068549, 'categoria': 'plastico' },
         { 'id': 2, 'nome': 'Ecoponto Jardim Pacaembu', 'endereco': 'R. Dante Suriani, 2-382 - Chácara Cneo, Campinas - SP, 13033-160', 'latitude': -22.904529, 'longitude': -47.105434, 'categoria': 'plastico' }
     ]
