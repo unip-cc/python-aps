@@ -1,6 +1,7 @@
 ## Importação de bibliotecas
 import os
 from math import radians, cos, sin, asin, sqrt
+
 ## Constantes
 OPCAO_VOLTAR = 'VOLTAR'
 
@@ -111,7 +112,6 @@ def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude, distMax):
             ponto['distancia'] = distancia
             pontos.append(ponto)
 
-    print('ARRAY -->', pontos)
     return pontos
 
 ## Exibe o banco de objetos a partir de uma opção escolhida (plástico, vidro, etc.)
@@ -158,7 +158,7 @@ def exibeObjetosByOpcao(numeroOpcao):
         latitude = ''
         longitude = ''
         pontosDeColetaDisponiveis = getPontosDeColetaByCategoria(objetoEscolhido['tipo'])
-        pontoDeColetaMaisProximo = {}
+        pontosDeColetaMaisProximos = {}
 
         limpaConsole()
 
@@ -177,14 +177,21 @@ def exibeObjetosByOpcao(numeroOpcao):
             latitude = float(latitude)
             longitude = float(longitude)
             opcaoValida = True
-            exibePontosDeColetaDisponiveis(pontosDeColetaDisponiveis)
-            pontoDeColetaMaisProximo = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude, distMax)
-            if (len(pontoDeColetaMaisProximo) > 0) :
-                print('\n\nEsses são os pontos correspondentes com sua busca: \n')
-                for ponto in pontoDeColetaMaisProximo :
-                    print('Distância: ', ponto['distancia'], ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
+            
+            pontosDeColetaMaisProximos = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude, distMax)
+            
+            limpaConsole()
 
-            input()
+            if (len(pontosDeColetaMaisProximos) > 0) :
+                print('Esses são os pontos correspondentes com sua busca: \n')
+                
+                for ponto in pontosDeColetaMaisProximos :
+                    print('Distância: ', format(ponto['distancia'], '.2f'), ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
+            else:
+                opcaoValida = False
+                exibeMensagemErro(f'Nenhum ponto de coleta encontrado no raio de {distMax:.2f}. Tente novamente.')
+
+            input('\nPrecione qualquer tecla para voltar ao menu inicial')
         else:
             opcaoValida = False
             exibeMensagemErro('Certifique-se de digitar os dados corretamente.')
@@ -197,6 +204,7 @@ def exibeDetalhesObjeto(objeto):
     print("""  => Código interno..........: """ + str(objeto['id']))
     print("""  => Material a ser reciclado: """ + str(objeto['descricao']))
 
+## Solicita ao usuário a distância máxima que ele está disposto a percorrer
 def digiteDistancia():
     return float(input('Digite a distância máxima (em KM) que você está disposto a percorrer pelo ponto --> '))
     
