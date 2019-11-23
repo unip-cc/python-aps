@@ -90,7 +90,10 @@ def getObjetoById(objetos, id):
 
 ## Retorna o ponto de coleta mais próximo (se baseia na latitude e longitude do usuário)
 def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude, distMax):
+    pontoMaisProximo = pontosDeColeta[0]
     pontos = []
+
+    pontoMaisProximo['distancia'] = 0
 
     for ponto in pontosDeColeta:
         lon1 = longitude
@@ -107,10 +110,17 @@ def getPontosDeColetaMaisProximo(pontosDeColeta, latitude, longitude, distMax):
         r = 6371
         distancia = c*r
         distancia = round(distancia, 3)
+        ponto['distancia'] = distancia
 
-        if (distancia < distMax) :
-            ponto['distancia'] = distancia
+        if (ponto['distancia'] < distMax):
             pontos.append(ponto)
+        
+        if ponto['distancia'] < pontoMaisProximo['distancia']:
+            pontoMaisProximo = ponto
+
+    ## Caso não exista nenhum ponto de coleta dentro do raio de distância, retorne o mais próximo
+    if len(pontos) == 0:
+        pontos.append(pontoMaisProximo)
 
     return pontos
 
@@ -181,6 +191,7 @@ def exibeObjetosByOpcao(numeroOpcao):
             try:
                 latitude = float(latitude)
                 longitude = float(longitude)
+                distMax = float(distMax)
 
                 opcaoValida = True
             
@@ -188,14 +199,14 @@ def exibeObjetosByOpcao(numeroOpcao):
                 
                 limpaConsole()
 
-                if (len(pontosDeColetaMaisProximos) > 0) :
+                if pontosDeColetaMaisProximos[0]['distancia'] <= distMax:
                     print('Esses são os pontos correspondentes com sua busca: \n')
                     
                     for ponto in pontosDeColetaMaisProximos :
                         print('Distância: ', format(ponto['distancia'], '.2f'), ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
                 else:
-                    opcaoValida = False
-                    exibeMensagemErro(f'Nenhum ponto de coleta encontrado no raio de {distMax:.2f}. Tente novamente.')
+                    print(f'Não encontramos nenhum ponto de coleta no raio de {distMax:.2f} km. O local mais próximo encontra-se logo abaixo: ')
+                    print('\nDistância: ', format(pontosDeColetaMaisProximos[0]['distancia'], '.2f'), ' Km\nNome: ', pontosDeColetaMaisProximos[0]['nome'], '\nEndereço: ', pontosDeColetaMaisProximos[0]['endereco'], '\n')
 
                 input('\nPrecione qualquer tecla para voltar ao menu inicial!\n')
             except:
@@ -215,8 +226,8 @@ def exibeDetalhesObjeto(objeto):
 
 ## Solicita ao usuário a distância máxima que ele está disposto a percorrer
 def digiteDistancia():
-    return float(input('Digite a distância máxima (em KM) que você está disposto a percorrer pelo ponto --> '))
-    
+    return input('Digite a distância máxima (em KM) que você está disposto a percorrer pelo ponto --> ')
+
 ## Exibe uma mensagem de erro no console
 def exibeMensagemErro(msg):
     limpaConsole()
@@ -224,18 +235,7 @@ def exibeMensagemErro(msg):
     print('[ERRO] => ' + str(msg))
     print('\nPrecione qualquer tecla para continuar')
     input()
-
-## Exibe os pontos de coleta disponíveis
-def exibePontosDeColetaDisponiveis(pontosDeColeta):
-    limpaConsole()
-
-    print('Aqui estão os pontos de coleta disponíveis em que você pode descartar o seu reciclável :)\n')
-
-    for ponto in pontosDeColeta:
-        print(""" => Nome....: """ + ponto['nome'])
-        print(""" => Endereço: """ + ponto['endereco'])
-        print('--------------------------------------------------------------')
-
+    
 ## Limpa o console
 def limpaConsole():
     os.system('cls') ## Executa o comando 'cls' no console
@@ -270,7 +270,7 @@ def getObjetos():
         { 'id': 25, 'descricao': 'Cartaz', 'obs': '', 'tipo': 'papel' },
         { 'id': 26, 'descricao': 'Monitor de computador', 'obs': '', 'tipo': 'eletronico' },
         { 'id': 27, 'descricao': 'Telefone celular (smartphone)', 'obs': '', 'tipo': 'eletronico' },
-        { 'id': 28, 'descricao': 'Bateria', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 28, 'descricao': 'Bateria / pilha', 'obs': '', 'tipo': 'eletronico' },
         { 'id': 29, 'descricao': 'Computador (notebook ou desktop)', 'obs': '', 'tipo': 'eletronico' },
         { 'id': 30, 'descricao': 'DVD Player', 'obs': '', 'tipo': 'eletronico' },
         { 'id': 31, 'descricao': 'Impressora', 'obs': '', 'tipo': 'eletronico' },
@@ -286,4 +286,7 @@ def getPontosDeColeta():
         { 'id': 5, 'nome': 'Ecoponto Vila União', 'endereco': 'R. Manoel Gomes Ferreira, 42 - Parque Tropical, Campinas - SP, 13060-523', 'latitude': -22.936016, 'longitude': -47.118061, 'categorias': ['plastico'] },
         { 'id': 6, 'nome': 'Ecoponto / Ponto Verde', 'endereco': 'Av. Santa Isabel, 2300 - Barão Geraldo, Campinas - SP, 13084-012', 'latitude': -22.817244, 'longitude': -47.100531, 'categorias': ['papel'] },
         { 'id': 7, 'nome': 'GMV Recycle', 'endereco': 'Rod. Lix da Cunha, 911 - Jardim Nova America, Campinas - SP, 13070-715', 'latitude': -22.898166, 'longitude': -47.093476, 'categorias': ['papel', 'eletronico'] },
+        { 'id': 8, 'nome': 'Ecoponto Jardim Eulina',  'endereco': 'Av. Mal. Rondon, 2296-2382 - Jardim Chapadão, Campinas - SP', 'latitude': -22.891751, 'longitude': -47.100940, 'categorias': ['papel', 'vidro', 'plastico', 'metal'] },
+        { 'id': 9, 'nome': 'Reversis - Reciclagem de Eletrônicos e Informática',  'endereco': 'R. da Abolição, 1900 - Pte. Preta, Campinas - SP, 13041-445', 'latitude': -22.926823, 'longitude': -47.042984, 'categorias': ['eletronico'] },
+        { 'id': 10, 'nome': 'Cooperativa de Recicláveis Santa Genebra',  'endereco': 'R. Estácio de Sá, 577 - Jardim Santa Genebra, Campinas - SP, 13084-751', 'latitude': -22.852778, 'longitude': -47.074819, 'categorias': ['papel', 'vidro', 'plastico', 'metal'] }
     ]
