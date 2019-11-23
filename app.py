@@ -3,7 +3,7 @@ from functions import limpaConsole, exibeMenuInicial, getOpcoesCategorias, exibe
 
 if __name__ == "__main__":
     ## Constantes
-    OPCAO_ENCERRAR_PROGRAMA = 7
+    OPCAO_ENCERRAR_PROGRAMA = 6
 
     ## Variáveis
     menuInicial = True

@@ -27,8 +27,7 @@ def exibeMenuInicial():
         [3] - Vidro
         [4] - Papel
         [5] - Eletrônicos
-        [6] - Outros
-        [7] - Encerrar o programa"""
+        [6] - Encerrar o programa"""
     )
 
 ## Obtem um array/vetor contendo o número das categorias disponíveis
@@ -247,6 +246,25 @@ def getObjetos():
         { 'id': 11, 'descricao': 'Ferragem', 'obs': '', 'tipo': 'metal' },
         { 'id': 12, 'descricao': 'Cano', 'obs': '', 'tipo': 'metal' },
         { 'id': 13, 'descricao': 'Moldura de quadro', 'obs': '', 'tipo': 'metal' },
+        { 'id': 14, 'descricao': 'Garrafa de vidro', 'obs': '', 'tipo': 'vidro' },
+        { 'id': 15, 'descricao': 'Pote de conserva', 'obs': '', 'tipo': 'vidro' },
+        { 'id': 16, 'descricao': 'Frascos de vidro', 'obs': '', 'tipo': 'vidro' },
+        { 'id': 17, 'descricao': 'Copo de vidro', 'obs': '', 'tipo': 'vidro' },
+        { 'id': 18, 'descricao': 'Vidro de janela', 'obs': '', 'tipo': 'vidro' },
+        { 'id': 19, 'descricao': 'Jornal', 'obs': '', 'tipo': 'papel' },
+        { 'id': 20, 'descricao': 'Revista', 'obs': '', 'tipo': 'papel' },
+        { 'id': 21, 'descricao': 'Envelope', 'obs': '', 'tipo': 'papel' },
+        { 'id': 22, 'descricao': 'Caderno', 'obs': '', 'tipo': 'papel' },
+        { 'id': 23, 'descricao': 'Caixa de papelão', 'obs': '', 'tipo': 'papel' },
+        { 'id': 24, 'descricao': 'Embalagem longa vida', 'obs': '', 'tipo': 'papel' },
+        { 'id': 25, 'descricao': 'Cartaz', 'obs': '', 'tipo': 'papel' },
+        { 'id': 26, 'descricao': 'Monitor de computador', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 27, 'descricao': 'Telefone celular (smartphone)', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 28, 'descricao': 'Bateria', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 29, 'descricao': 'Computador (notebook ou desktop)', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 30, 'descricao': 'DVD Player', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 31, 'descricao': 'Impressora', 'obs': '', 'tipo': 'eletronico' },
+        { 'id': 32, 'descricao': 'Câmera fotográfica', 'obs': '', 'tipo': 'eletronico' }
     ]
 
 ## Retorna um array/vetor contendo todos os pontos de coleta disponíveis
