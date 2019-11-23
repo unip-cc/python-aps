@@ -25,6 +25,18 @@ if __name__ == "__main__":
 
             if opcaoEscolhida != OPCAO_ENCERRAR_PROGRAMA:
                 menuInicial = exibeObjetosByOpcao(opcaoEscolhida)
+            else:
+                limpaConsole()
+                print(
+                """
+                    Encerrando o programa...
+                    Obrigado por utilizar a nossa solução!
+
+                    Desenvolvido por:
+                        - CARLOS DANIEL MARTINS DE ALMEIDA
+                        - RENAN DE MATOS SANTATERRA
+                        - VINICIUS VALENTE RAMIREZ
+                """)
         else:
             textoErro = 'Opção inexistente.' if len(str(opcaoEscolhida)) > 0 else 'Digite alguma coisa.'
             exibeMensagemErro(textoErro + '. Tente novamente.')
