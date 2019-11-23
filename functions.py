@@ -165,32 +165,41 @@ def exibeObjetosByOpcao(numeroOpcao):
         
         exibeDetalhesObjeto(objetoEscolhido)
     
-        print('\nAgora iremos precisar que você digite as suas coordenadas geográficas (latitude e longitude), ok?\n')
+        print('\nAgora iremos precisar que você digite as suas coordenadas geográficas (latitude e longitude), ok? (Dica: você pode digitar a palavra UNIP que iremos considerar a localização da UNIP - Swift)\n')
         
         latitude = str(input('Digite a sua latitude: '))
         longitude = str(input('Digite a sua longitude: '))
 
         distMax = digiteDistancia()
 
-        if len(latitude) > 0 and len(longitude) > 0:
-            latitude = float(latitude)
-            longitude = float(longitude)
-            opcaoValida = True
-            
-            pontosDeColetaMaisProximos = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude, distMax)
-            
-            limpaConsole()
+        if len(latitude) > 0 and len(longitude):
+            ## Considera latitude e longitude da UNIP
+            latitude = -22.926301 if latitude.upper() == 'UNIP' else latitude
+            longitude = -47.037686 if longitude.upper() == 'UNIP' else longitude
 
-            if (len(pontosDeColetaMaisProximos) > 0) :
-                print('Esses são os pontos correspondentes com sua busca: \n')
+            try:
+                latitude = float(latitude)
+                longitude = float(longitude)
+
+                opcaoValida = True
+            
+                pontosDeColetaMaisProximos = getPontosDeColetaMaisProximo(pontosDeColetaDisponiveis, latitude, longitude, distMax)
                 
-                for ponto in pontosDeColetaMaisProximos :
-                    print('Distância: ', format(ponto['distancia'], '.2f'), ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
-            else:
-                opcaoValida = False
-                exibeMensagemErro(f'Nenhum ponto de coleta encontrado no raio de {distMax:.2f}. Tente novamente.')
+                limpaConsole()
 
-            input('\nPrecione qualquer tecla para voltar ao menu inicial')
+                if (len(pontosDeColetaMaisProximos) > 0) :
+                    print('Esses são os pontos correspondentes com sua busca: \n')
+                    
+                    for ponto in pontosDeColetaMaisProximos :
+                        print('Distância: ', format(ponto['distancia'], '.2f'), ' Km\nNome: ', ponto['nome'], '\nEndereço: ', ponto['endereco'], '\n')
+                else:
+                    opcaoValida = False
+                    exibeMensagemErro(f'Nenhum ponto de coleta encontrado no raio de {distMax:.2f}. Tente novamente.')
+
+                input('\nPrecione qualquer tecla para voltar ao menu inicial')
+            except:
+                opcaoValida = False
+                exibeMensagemErro('Certifique-se de digitar os dados corretamente.')
         else:
             opcaoValida = False
             exibeMensagemErro('Certifique-se de digitar os dados corretamente.')
